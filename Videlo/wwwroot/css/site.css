@@ -1,0 +1,86 @@
+:root {
+    --main-content-margin: 5.5rem;
+}
+
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+
+/* Layout */
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    display: block;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: var(--bs-body-bg);
+    box-shadow: 0 0 0.5rem 1rem rgba(0, 0, 0, 0.4);
+    padding-top: var(--main-content-margin);
+}
+.main-content-margin {
+    margin-top: var(--main-content-margin);
+}
+
+.container-fluid {
+    padding-left: calc(var(--bs-gutter-x) * 1.0);
+    padding-right: calc(var(--bs-gutter-x) * 1.0);
+}
+
+.max-h-video {
+    max-height: 40rem;
+}
+
+.video-thumb-height {
+    height: 9rem;
+}
+
+/* Video Watch */
+.sidebar-right {
+    position: fixed;
+    top: var(--main-content-margin);
+    bottom: 0;
+    right: 0;
+    z-index: 1000;
+    display: block;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.comment {
+    margin-bottom: 1rem;
+}
+    .comment:not(:last-child) {
+        border-bottom: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+        --bs-border-opacity: 1;
+        border-color: rgba(var(--bs-primary-rgb),var(--bs-border-opacity)) !important;
+    }
+
+
+.image-container {
+    position: relative;
+    overflow: hidden;
+    padding-top: 100%; /* Controls the aspect ratio (height as a percentage of width) */
+}

@@ -1,0 +1,45 @@
+﻿@using Videlo.Models.Database;
+
+@model IEnumerable<User>
+
+@{
+    ViewData["Title"] = "Admin panel";
+}
+
+<h2>Admin panel</h2>
+
+<input class="form-control mb-3" type="text" id="userSearch" placeholder="Search for users..">
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="user-filter">
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td class="user-filter">
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    <a class="nav-link" asp-action="EditRoles" asp-route-userId="@item.Id">Manage Roles</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/admin/user-search.js"></script>
+}

@@ -1,0 +1,52 @@
+﻿@using Videlo.Models.ViewModels;
+@model VideoUploadViewModel
+
+@{
+    ViewData["Title"] = "Upload Video";
+}
+
+<h4>@ViewData["Title"]</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form method="post" enctype="multipart/form-data" id="form-upload">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label for="Description" class="control-label">Description (optional)</label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="VideoFile" class="control-label"></label>
+                <input asp-for="VideoFile" class="form-control" type="file" accept="video/*" />
+                <span asp-validation-for="VideoFile" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label for="ThumbnailImage" class="control-label">Thumbnail image (optional)</label>
+                <input asp-for="ThumbnailImage" class="form-control" type="file" accept="image/*" />
+                <span asp-validation-for="ThumbnailImage" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="Upload" class="btn btn-primary" id="upload-submit-btn" />
+            </div>
+        </form>
+    </div>
+    
+    <div id="await-container">
+
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script type="text/javascript" src="~/js/videomanagement/ui/upload-video-submit.js"></script>
+    <script type="text/javascript" src="~/js/videomanagement/services/upload-video-request.js"></script>
+    <script type="text/javascript" src="~/js/videomanagement/services/get-upload-progress-partial.js"></script>
+}

@@ -1,0 +1,16 @@
+﻿@using Videlo.Models.Database;
+
+@model IEnumerable<Video>
+
+@{
+    ViewData["Title"] = "Video hosting";
+}
+
+<div class="row justify-content-center">
+    @foreach (var video in Model)
+    {
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 pb-4">
+            @await Html.PartialAsync("_VideoCard", video)
+        </div>
+    }
+</div>

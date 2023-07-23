@@ -1,0 +1,10 @@
+﻿@using Videlo.Models.Database;
+
+@model IEnumerable<Video>
+
+@foreach (var video in Model)
+{
+    <div class="pb-4">
+        @await Html.PartialAsync("_VideoCard", video)
+    </div>
+}

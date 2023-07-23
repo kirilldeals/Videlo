@@ -1,0 +1,55 @@
+﻿@using Videlo.Data.Enums;
+@using Videlo.Models.Database;
+
+@model User
+
+@{
+    ViewData["Title"] = @Model.UserName;
+}
+
+<h2>@Model.UserName</h2>
+<div class="d-flex flex-column mb-3">
+    <span>@Model.UserSubscribers.Count subscribers</span>
+    <span>@Model.Videos.Count videos</span>
+    @if (Model.UserName != User.Identity?.Name)
+    {
+        <div class="mt-2">
+            <input type="checkbox" class="d-none" id="sub-button" data-channelid="@Model.Id" @(ViewBag.IsSubbed == true ? "checked" : "")>
+            <label for="sub-button" class="btn rounded-pill py-1 px-2"></label>
+        </div>
+    }
+</div>
+
+@if (Model.Videos.Count > 0)
+{
+    <ul class="nav nav-tabs mb-3" role="tablist" id="video-filters">
+        <li class="nav-item" role="presentation">
+            <div class="nav-link active" type="button" data-bs-toggle="tab" aria-selected="true" role="tab" id="videos-new" data-filter="@ChannelVideosFilter.Newest">Newest</div>
+        </li>
+        <li class="nav-item" role="presentation">
+            <div class="nav-link" type="button" data-bs-toggle="tab" aria-selected="false" role="tab" id="videos-old" data-filter="@ChannelVideosFilter.Oldest">Oldest</div>
+        </li>
+        <li class="nav-item" role="presentation">
+            <div class="nav-link" type="button" data-bs-toggle="tab" aria-selected="false" role="tab" id="videos-popular" data-filter="@ChannelVideosFilter.Popular">Popular</div>
+        </li>
+    </ul>
+
+    <div id="videos-container" data-userid="@Model.Id" data-viewname="_ChannelVideos">
+    </div>
+}
+else
+{
+    <span>This channel doesn't have any videos</span>
+}
+
+@section Styles{
+    <link rel="stylesheet" href="/css/sub-button.css" />
+ }
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/video/ui/sub-button-toggle.js"></script>
+    <script type="text/javascript" src="~/js/video/services/channel-subscription-request.js"></script>
+
+    <script type="text/javascript" src="~/js/channel/ui/display-videos.js"></script>
+    <script type="text/javascript" src="~/js/channel/services/get-videos-request.js"></script>
+}

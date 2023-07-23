@@ -1,0 +1,12 @@
+﻿@using Videlo.Models.Database;
+
+@model IEnumerable<UserSubscription>
+
+<ul class="list-group">
+    @foreach (var sub in Model)
+    {
+        <li class="list-group-flush">
+            <a asp-controller="Channel" asp-action="Videos" asp-route-userId="@sub.UserChannelId" class="list-group-item list-group-item-action list-group-flush">@sub.UserChannel.UserName</a>
+        </li>
+    }
+</ul>

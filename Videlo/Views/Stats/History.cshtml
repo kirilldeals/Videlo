@@ -1,0 +1,19 @@
+﻿@using Videlo.Models.Database;
+
+@model IEnumerable<WatchHistory>
+
+@{
+    ViewData["Title"] = "Playlist";
+}
+
+<h2>History</h2>
+<hr />
+<div class="row">
+    @foreach (var history in Model)
+    {
+        <div class="pb-4">
+            <h6>@history.WatchDate</h6>
+            @await Html.PartialAsync("_VideoCardWide", history.Video)
+        </div>
+    }
+</div>

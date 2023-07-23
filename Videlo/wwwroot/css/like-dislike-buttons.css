@@ -1,0 +1,33 @@
+﻿.feedback {
+    display: flex;
+    justify-content: flex-end;
+}
+
+    .feedback > input {
+        display: none;
+    }
+
+    .feedback > label {
+        position: relative;
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+
+        .feedback > label:last-child {
+            margin-left: 1rem;
+        }
+
+        /* hide the filled icons by default */
+        .feedback > label > i.feedback-icon-selected {
+            display: none;
+        }
+
+    /* show the filled icons when radio button is checked */
+    .feedback > input:checked + label > i.feedback-icon-selected {
+        display: inline;
+    }
+
+    /* hide the empty icons when radio button is checked */
+    .feedback > input:checked + label > i.feedback-icon {
+        display: none;
+    }

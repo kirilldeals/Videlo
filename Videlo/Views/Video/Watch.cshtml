@@ -1,0 +1,124 @@
+﻿@using Microsoft.Extensions.Options;
+@using Videlo.Configuration;
+@using Videlo.Models.Database;
+@using Videlo.Models.ViewModels;
+
+@inject IOptions<AWSConfiguration> AWSOptions
+
+@model VideoWatchViewModel
+
+@{
+    ViewData["Title"] = "VideoTitle";
+}
+
+<div class="row">
+    <div class="col-12 col-lg-9">
+        <video class="w-100 max-h-video" controls autoplay muted id="video" data-videoid="@Model.Video.Id"
+               src="@($"{AWSOptions.Value.BaseURL}{Model.Video.VideoPath}")">
+        </video>
+        <h3>@Model.Video.Title</h3>
+
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <h4 class="mb-0 me-2">
+                    <a class="text-decoration-none" asp-controller="Channel" asp-action="Videos" asp-route-userId="@Model.Video.UserId">@Model.Video.User.UserName</a>
+                </h4>
+                @if (Model.Video.User.UserName != User.Identity?.Name)
+                {
+                    <input type="checkbox" class="d-none" id="sub-button" data-channelid="@Model.Video.UserId" @(Model.IsSubbed == true ? "checked" : "")>
+                    <label for="sub-button" class="btn rounded-pill py-1 px-2"></label>
+                }
+            </div>
+            <div class="feedback">
+                <input type="radio"
+                       name="feedback"
+                       id="like"
+                       data-islike="true"
+                       data-videoid="@Model.Video.Id"
+                @(Model.UserFeedback?.IsLike == true ? "class=active checked" : "")>
+                <label for="like">
+                    <i class="bi bi-hand-thumbs-up feedback-icon"></i>
+                    <i class="bi bi-hand-thumbs-up-fill feedback-icon-selected"></i>
+                    <span id="likecount">@Model.Video.VideoFeedbacks.Count(f => f.IsLike)</span>
+                </label>
+
+                <input type="radio"
+                       name="feedback"
+                       id="dislike"
+                       data-islike="false"
+                       data-videoid="@Model.Video.Id"
+                @(Model.UserFeedback?.IsLike == false ? "class=active checked" : "")>
+                <label for="dislike">
+                    <i class="bi bi-hand-thumbs-down feedback-icon"></i>
+                    <i class="bi bi-hand-thumbs-down-fill feedback-icon-selected"></i>
+                    <span id="dislikecount">@Model.Video.VideoFeedbacks.Count(f => !f.IsLike)</span>
+                </label>
+            </div>
+        </div>
+        <hr />
+
+        <div class="card mb-3">
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">@Model.Video.ViewCount views</h6>
+                <h6 class="card-subtitle mb-2 text-muted">@Model.Video.CreatedAt</h6>
+                <p class="card-text">@Model.Video.Description</p>
+            </div>
+        </div>
+
+        <h4>Comments (@Model.Video.VideoComments.Count)</h4>
+        <form asp-action="Create" asp-controller="Comment" method="post" id="commentForm">
+            <input type="hidden" name="videoId" value="@Model.Video.Id" />
+            <div class="mb-3">
+                <textarea class="form-control" rows="3" maxlength="2000" placeholder="Write a comment" name="comment"></textarea>
+                <span class="text-danger" data-valmsg-for="comment"></span>
+            </div>
+            <button type="submit" class="btn btn-secondary">Comment</button>
+        </form>
+
+        <div class="my-3">
+            @if (Model.Video.VideoComments.Any())
+            {
+                <ul class="nav nav-tabs mb-3" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <div class="nav-link active" type="button" data-bs-toggle="tab" aria-selected="true" role="tab" id="comments-popular">Popular</div>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <div class="nav-link" type="button" data-bs-toggle="tab" aria-selected="false" role="tab" id="comments-new">Newest</div>
+                    </li>
+                </ul>
+                <div id="video-comments-container">
+                </div>
+            }
+            else
+            {
+                <p>There are no comments for this video</p>
+            }
+        </div>
+    </div>
+
+    <aside class="col-12 col-lg-3">
+        @await Component.InvokeAsync("Recommendations", new { videoId = Model.Video.Id, channelId = Model.Video.UserId })
+    </aside>
+</div>
+
+@section Styles{
+    <link rel="stylesheet" href="/css/like-dislike-buttons.css" />
+    <link rel="stylesheet" href="/css/sub-button.css" />
+ }
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/video/ui/sub-button-toggle.js"></script>
+    <script type="text/javascript" src="~/js/video/services/channel-subscription-request.js"></script>
+
+    <script type="text/javascript" src="~/js/video/ui/feedback-handler.js"></script>
+    <script type="text/javascript" src="~/js/video/ui/video-feedback-onclick.js"></script>
+    <script type="text/javascript" src="~/js/video/ui/comment-feedback-onclick.js"></script>
+    <script type="text/javascript" src="~/js/video/services/video-feedback-request.js"></script>
+    <script type="text/javascript" src="~/js/video/services/comment-feedback-request.js"></script>
+
+    <script type="text/javascript" src="~/js/video/ui/video-watch-handler.js"></script>
+    <script type="text/javascript" src="~/js/video/services/video-viewcount-request.js"></script>
+
+    <script type="text/javascript" src="~/js/video/ui/display-comments.js"></script>
+    <script type="text/javascript" src="~/js/video/services/get-comments-request.js"></script>
+}

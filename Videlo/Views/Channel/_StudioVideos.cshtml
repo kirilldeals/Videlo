@@ -1,0 +1,23 @@
+﻿@using Videlo.Models.Database;
+
+@model IEnumerable<Video>
+
+<div>
+    @foreach (var video in Model)
+    {
+        <div class="d-flex">
+            <div class="flex-grow-1">
+                @await Html.PartialAsync("_VideoCardWide", video)
+            </div>
+            <div class="d-flex flex-column justify-content-evenly align-items-center">
+                <a class="mx-2 btn btn-outline-primary" asp-action="Edit" asp-controller="VideoManagement" asp-route-videoId="@video.Id">
+                    <i class="bi bi-pencil"></i>
+                </a>
+                <a class="mx-2 btn btn btn-outline-danger" asp-action="Delete" asp-controller="VideoManagement" asp-route-videoId="@video.Id">
+                    <i class="bi bi-trash"></i>
+                </a>
+            </div>
+        </div>
+        <hr />
+    }
+</div>

@@ -1,0 +1,59 @@
+﻿@using System.Security.Claims;
+@using Videlo.Models.Database;
+
+@model IEnumerable<VideoComment>
+
+@{
+    var curUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+}
+
+@foreach (var comment in Model)
+{
+    bool? curUserCommentFeedback = null;
+    if (curUserId != null)
+    {
+        curUserCommentFeedback = comment.VideoCommentFeedbacks
+            .FirstOrDefault(f => f.UserId == curUserId)?.IsLike;
+    }
+
+    <div class="comment">
+        <div class="d-flex w-100 justify-content-between">
+            <h5>
+                <a class="text-decoration-none" asp-controller="Channel" asp-action="Videos" asp-route-userId="@comment.UserId">@comment.User.UserName</a>
+            </h5>
+            <small>@comment.CreatedAt</small>
+        </div>
+        <p>
+            @comment.Content
+        </p>
+        <div class="feedback justify-content-start">
+            <input type="radio"
+                   name="@($"comment-feedback-{comment.Id}")"
+                   id="@($"like-{comment.Id}")"
+                   data-another-input-id="@($"dislike-{comment.Id}")"
+                   data-span-id="@($"likecount-{comment.Id}")"
+                   data-islike="true"
+                   data-commentid="@comment.Id"
+            @(curUserCommentFeedback == true ? "class=active checked" : "")>
+            <label for="@($"like-{comment.Id}")">
+                <i class="bi bi-hand-thumbs-up feedback-icon"></i>
+                <i class="bi bi-hand-thumbs-up-fill feedback-icon-selected"></i>
+                <span id="@($"likecount-{comment.Id}")">@comment.VideoCommentFeedbacks.Count(f => f.IsLike)</span>
+            </label>
+
+            <input type="radio"
+                   name="@($"comment-feedback-{comment.Id}")"
+                   id="@($"dislike-{comment.Id}")"
+                   data-another-input-id="@($"like-{comment.Id}")"
+                   data-span-id="@($"dislikecount-{comment.Id}")"
+                   data-islike="false"
+                   data-commentid="@comment.Id"
+            @(curUserCommentFeedback == false ? "class=active checked" : "")>
+            <label for="@($"dislike-{comment.Id}")">
+                <i class="bi bi-hand-thumbs-down feedback-icon"></i>
+                <i class="bi bi-hand-thumbs-down-fill feedback-icon-selected"></i>
+                <span id="@($"dislikecount-{comment.Id}")">@comment.VideoCommentFeedbacks.Count(f => !f.IsLike)</span>
+            </label>
+        </div>
+    </div>
+}

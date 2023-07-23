@@ -1,0 +1,24 @@
+﻿@using Microsoft.Extensions.Options;
+@using Videlo.Configuration;
+@using Videlo.Models.Database;
+
+@inject IOptions<AWSConfiguration> AWSOptions
+
+@model Video
+
+<a class="text-decoration-none" asp-controller="Video" asp-action="Watch" asp-route-videoId="@Model.Id">
+    <div class="card border-dark h-100">
+        <div class="d-flex align-items-center justify-content-center shadow-sm video-thumb-height">
+            <img class="mh-100 mw-100" src="@($"{AWSOptions.Value.BaseURL}{Model.ThumbnailPath}")" alt="Video thumbnail">
+        </div>
+        <div class="card-body">
+            <h4 class="card-title">@Model.Title</h4>
+            <p class="card-text text-muted">@Model.User.UserName</p>
+        </div>
+        <div class="card-footer text-muted">
+            <small class="text-muted">@Model.ViewCount views</small>
+            <br>
+            <small class="text-muted">@Model.CreatedAt</small>
+        </div>
+    </div>
+</a>

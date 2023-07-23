@@ -1,0 +1,22 @@
+﻿#sub-button + label {
+    color: #fff;
+    background-image: linear-gradient(#75cb75, #62c462 60%, #5ab45a);
+}
+    #sub-button + label:hover {
+        cursor: pointer;
+        background-image: linear-gradient(#3f7d3f, #458945 40%, #499149);
+    }
+
+#sub-button:checked + label {
+    background-image: linear-gradient(#8a9196, #7a8288 60%, #70787d);
+}
+    #sub-button:checked + label:hover {
+        background-image: linear-gradient(#4e5357, #555b5f 40%, #5a6065);
+    }
+
+#sub-button + label::before {
+    content: "Subscribe";
+}
+#sub-button:checked + label::before {
+    content: "Unsubscribe";
+}

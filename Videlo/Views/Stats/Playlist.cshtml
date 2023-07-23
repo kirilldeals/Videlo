@@ -1,0 +1,21 @@
+﻿@using Videlo.Models.Database;
+@using Videlo.Models.ViewModels;
+
+@model PlaylistViewModel
+
+@{
+    var title = Model.LikeFilter ? "Liked" : "Disliked";
+    ViewData["Title"] = $"{title} videos";
+}
+
+<h2>@title videos</h2>
+<hr />
+<div class="row">
+    @foreach (var feedback in Model.Feedbacks)
+    {
+        <div class="pb-4">
+            <h6>@feedback.CreatedAt</h6>
+            @await Html.PartialAsync("_VideoCardWide", feedback.Video)
+        </div>
+    }
+</div>
