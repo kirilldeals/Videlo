@@ -1,9 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Videlo.Data.Enums;
+using Videlo.Services.Interfaces;
 
 namespace Videlo.Services
 {
-    public class UploadTaskRepository
+    public class UploadTaskRepository : IUploadTaskRepository
     {
         private readonly Dictionary<string, Task> _tasks;
         private readonly object _lock;

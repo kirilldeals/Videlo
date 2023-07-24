@@ -5,6 +5,7 @@ using Videlo.Configuration;
 using Videlo.Data;
 using Videlo.Models.Database;
 using Videlo.Services;
+using Videlo.Services.Interfaces;
 
 namespace Videlo
 {
@@ -42,9 +43,9 @@ namespace Videlo
                 .AddRazorRuntimeCompilation();
 
             builder.Services
-                .AddSingleton<S3Service>();
+                .AddSingleton<IStorageService, S3Service>();
             builder.Services
-                .AddSingleton<UploadTaskRepository>();
+                .AddSingleton<IUploadTaskRepository, UploadTaskRepository>();
 
             builder.Services
                 .Configure<AdminCredentialsSettings>(builder.Configuration.GetSection("AdminCredentialsSettings"));

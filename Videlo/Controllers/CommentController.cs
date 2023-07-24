@@ -58,7 +58,6 @@ namespace Videlo.Controllers
 
             if (comment.IsNullOrEmpty())
             {
-                ModelState.AddModelError("comment", "Comment is empty");
                 return RedirectToAction("Watch", "Video", new { videoId = video.Id });
             }
 

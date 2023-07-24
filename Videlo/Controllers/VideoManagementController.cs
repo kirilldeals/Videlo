@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
 using Videlo.Data.Enums;
 using Microsoft.EntityFrameworkCore;
+using Videlo.Services.Interfaces;
 
 namespace Videlo.Controllers
 {
@@ -22,11 +23,11 @@ namespace Videlo.Controllers
     {
         private readonly VideloContext _db;
         private readonly UserManager<User> _userManager;
-        private readonly S3Service _s3Service;
+        private readonly IStorageService _s3Service;
         private readonly IOptions<AWSConfiguration> _awsOptions;
-        private readonly UploadTaskRepository _taskRepository;
+        private readonly IUploadTaskRepository _taskRepository;
 
-        public VideoManagementController(VideloContext db, UserManager<User> userManager, S3Service s3Service, IOptions<AWSConfiguration> awsOptions, UploadTaskRepository taskRepository)
+        public VideoManagementController(VideloContext db, UserManager<User> userManager, IStorageService s3Service, IOptions<AWSConfiguration> awsOptions, IUploadTaskRepository taskRepository)
         {
             _db = db;
             _userManager = userManager;

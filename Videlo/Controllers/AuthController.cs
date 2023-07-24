@@ -28,7 +28,7 @@ namespace Videlo.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new User { Email = model.Email, UserName = model.UserName };
+                var user = new User { Email = model.Email, UserName = model.UserName, CreatedAt = DateTime.UtcNow };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

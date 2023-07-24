@@ -5,10 +5,11 @@ using Microsoft.Extensions.Options;
 using System.Net;
 using Videlo.Configuration;
 using Videlo.Models;
+using Videlo.Services.Interfaces;
 
 namespace Videlo.Services
 {
-    public class S3Service
+    public class S3Service : IStorageService
     {
         private readonly AWSConfiguration _options;
         private readonly AmazonS3Client _client;
@@ -25,6 +26,7 @@ namespace Videlo.Services
 
             _client = new AmazonS3Client(credentials, config);
         }
+
 
         public async Task<string> UploadVideoAsync(FormFileInfo file)
         {
