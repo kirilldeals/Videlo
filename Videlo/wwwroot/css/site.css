@@ -57,6 +57,18 @@ body {
     height: 9rem;
 }
 
+.video-card-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card a {
+    color: inherit;
+    text-decoration: inherit;
+}
+
 /* Video Watch */
 .sidebar-right {
     position: fixed;
@@ -78,9 +90,13 @@ body {
         border-color: rgba(var(--bs-primary-rgb),var(--bs-border-opacity)) !important;
     }
 
+    .comment p {
+        max-height: 15rem;
+        overflow:auto;
+    }
 
-.image-container {
-    position: relative;
-    overflow: hidden;
-    padding-top: 100%; /* Controls the aspect ratio (height as a percentage of width) */
+.video-description {
+    white-space: pre-wrap;
+    max-height: 12rem;
+    overflow: auto;
 }

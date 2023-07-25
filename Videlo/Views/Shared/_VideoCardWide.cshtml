@@ -6,19 +6,28 @@
 
 @model Video
 
-<a class="text-decoration-none" asp-controller="Video" asp-action="Watch" asp-route-videoId="@Model.Id">
-    <div class="card border-dark flex-row">
-        <div class="d-flex align-items-center justify-content-center col-4">
+
+<div class="card border-dark flex-row">
+    <div class="d-flex align-items-center justify-content-center col-4">
+        <a asp-controller="Video" asp-action="Watch" asp-route-videoId="@Model.Id">
             <div class="d-flex align-items-center justify-content-center video-thumb-height">
                 <img class="mw-100 mh-100" src="@($"{AWSOptions.Value.BaseURL}{Model.ThumbnailPath}")" alt="Video thumbnail" />
             </div>
-        </div>
-        <div class="card-body col-8">
-            <h4 class="card-title">@Model.Title</h4>
-            <p class="card-text text-muted">@Model.User.UserName</p>
-            <small class="text-muted">@Model.ViewCount views</small>
-            <br>
-            <small class="text-muted">@Model.CreatedAt</small>
-        </div>
+        </a>
     </div>
-</a>
+    <div class="card-body col-8">
+        <h4 class="card-title video-card-title">
+            <a asp-controller="Video" asp-action="Watch" asp-route-videoId="@Model.Id">
+                @Model.Title
+            </a>
+        </h4>
+        <p class="card-text text-muted">
+            <a asp-controller="Channel" asp-action="Videos" asp-route-userId="@Model.UserId">
+                @Model.User.UserName
+            </a>
+        </p>
+        <small class="text-muted">@Model.ViewCount views</small>
+        <br>
+        <small class="text-muted">@Model.CreatedAt</small>
+    </div>
+</div>

@@ -5,8 +5,10 @@ namespace Videlo.Models.ViewModels
     public class VideoUploadViewModel
     {
         [Required]
+        [MaxLength(100)]
         public string Title { get; set; } = null!;
 
+        [MaxLength(5000)]
         public string? Description { get; set; }
 
         [Required]

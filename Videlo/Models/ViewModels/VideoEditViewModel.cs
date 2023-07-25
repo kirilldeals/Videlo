@@ -1,4 +1,6 @@
-﻿namespace Videlo.Models.ViewModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Videlo.Models.ViewModels
 {
     public class VideoEditViewModel
     {
@@ -14,7 +16,11 @@
         }
 
         public string Id { get; set; } = null!;
+
+        [MaxLength(100)]
         public string Title { get; set; } = null!;
+
+        [MaxLength(5000)]
         public string? Description { get; set; }
     }
 }

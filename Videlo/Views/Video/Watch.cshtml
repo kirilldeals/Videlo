@@ -61,7 +61,7 @@
             <div class="card-body">
                 <h6 class="card-subtitle mb-2 text-muted">@Model.Video.ViewCount views</h6>
                 <h6 class="card-subtitle mb-2 text-muted">@Model.Video.CreatedAt</h6>
-                <p class="card-text">@Model.Video.Description</p>
+                <div class="card-text video-description">@Model.Video.Description</div>
             </div>
         </div>
 
@@ -69,7 +69,7 @@
         <form asp-action="Create" asp-controller="Comment" method="post" id="commentForm">
             <input type="hidden" name="videoId" value="@Model.Video.Id" />
             <div class="mb-3">
-                <textarea class="form-control" rows="3" maxlength="2000" placeholder="Write a comment" name="comment"></textarea>
+                <textarea class="form-control" rows="3" maxlength="5000" placeholder="Write a comment" name="comment"></textarea>
                 <span class="text-danger" data-valmsg-for="comment"></span>
             </div>
             <button type="submit" class="btn btn-secondary">Comment</button>
