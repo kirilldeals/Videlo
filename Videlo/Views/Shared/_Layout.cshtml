@@ -46,7 +46,9 @@
                             }
                             <a class="dropdown-item" asp-controller="Channel" asp-action="Videos" asp-route-userId="@User.FindFirstValue(ClaimTypes.NameIdentifier)">Your Channel</a>
                             <a class="dropdown-item" asp-controller="Channel" asp-action="Studio">Video Studio</a>
-                            <a class="dropdown-item" asp-controller="VideoManagement" asp-action="Upload">Upload Video</a>
+                            <a class="dropdown-item" asp-controller="VideoManagement" asp-action="Upload">
+                                <i class="bi bi-upload"></i> Upload Video
+                            </a>
                             <a class="dropdown-item" asp-controller="User" asp-action="ChangePassword">Change Password</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" asp-controller="Auth" asp-action="Logout">Log Out</a>
