@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Concurrent;
+using System.Threading.Tasks;
 using Videlo.Data.Enums;
 using Videlo.Services.Interfaces;
 
@@ -6,42 +7,31 @@ namespace Videlo.Services
 {
     public class UploadTaskRepository : IUploadTaskRepository
     {
-        private readonly Dictionary<string, Task> _tasks;
-        private readonly object _lock;
+        private readonly ConcurrentDictionary<string, Task> _tasks;
 
         public UploadTaskRepository()
         {
-            _tasks = new Dictionary<string, Task>();
-            _lock = new object();
+            _tasks = new ConcurrentDictionary<string, Task>();
         }
 
-        public UploadStatus GetAndUpdateUploadStatus(string userId)
+        public UploadStatus GetUploadStatus(string userId)
         {
-            lock (_lock)
+            if (_tasks.TryGetValue(userId, out var task))
             {
-                if (_tasks.TryGetValue(userId, out var task))
+                if (task.IsCompleted)
                 {
-                    if (task.IsCompleted)
-                    {
-                        _tasks.Remove(userId);
-                        return UploadStatus.Completed;
-                    }
-                    return UploadStatus.InProgress;
+                    _tasks.TryRemove(userId, out _);
+                    return UploadStatus.Completed;
                 }
-
-                return UploadStatus.NotStarted;
+                return UploadStatus.InProgress;
             }
+
+            return UploadStatus.NotStarted;
         }
 
-        public void SaveTask(Task task, string userId)
+        public bool TryAdd(string userId, Task task)
         {
-            lock (_lock)
-            {
-                if (!_tasks.ContainsKey(userId))
-                {
-                    _tasks[userId] = task;
-                }
-            }
+            return _tasks.TryAdd(userId, task);
         }
     }
 }

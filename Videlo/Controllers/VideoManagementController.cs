@@ -43,7 +43,7 @@ namespace Videlo.Controllers
 
             if (curUser != null)
             {
-                var status = _taskRepository.GetAndUpdateUploadStatus(curUser.Id);
+                var status = _taskRepository.GetUploadStatus(curUser.Id);
 
                 if (status != UploadStatus.InProgress)
                 {
@@ -63,14 +63,16 @@ namespace Videlo.Controllers
 
             if (ModelState.IsValid && curUser != null)
             {
-                var status = _taskRepository.GetAndUpdateUploadStatus(curUser.Id);
+                var status = _taskRepository.GetUploadStatus(curUser.Id);
 
                 if (status != UploadStatus.InProgress)
                 {
                     Task task = CreateVideoAsync(model, curUser.Id);
-                    _taskRepository.SaveTask(task, curUser.Id);
-                    await task;
-                    return Ok();
+                    if (_taskRepository.TryAdd(curUser.Id, task))
+                    {
+                        await task;
+                        return Ok();
+                    }
                 }
 
                 return StatusCode(503);

@@ -4,8 +4,8 @@ namespace Videlo.Services.Interfaces
 {
     public interface IUploadTaskRepository
     {
-        UploadStatus GetAndUpdateUploadStatus(string userId);
+        UploadStatus GetUploadStatus(string userId);
 
-        void SaveTask(Task task, string userId);
+        bool TryAdd(string userId, Task task);
     }
 }
