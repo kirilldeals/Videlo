@@ -1,9 +1,9 @@
-﻿const $htmlVideo = $('#video');
+﻿$(document).ready(function () {
+    const $htmlVideo = $('#video');
+    const video = $htmlVideo[0];
 
-$(document).ready(function () {
     let playbackStartTime = 0;
     let totalPlayTime = 0;
-    const video = $htmlVideo[0];
     let timeBoundSeconds;
 
     $htmlVideo.on('timeupdate', function () {

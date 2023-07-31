@@ -43,6 +43,7 @@
                             @if (User.IsInRole(RoleConstants.Admin))
                             {
                                 <a class="dropdown-item" asp-controller="Admin" asp-action="Index">Admin panel</a>
+                                <div class="dropdown-divider"></div>
                             }
                             <a class="dropdown-item" asp-controller="Channel" asp-action="Videos" asp-route-userId="@User.FindFirstValue(ClaimTypes.NameIdentifier)">Your Channel</a>
                             <a class="dropdown-item" asp-controller="Channel" asp-action="Studio">Video Studio</a>
@@ -66,7 +67,7 @@
 
     <div class="container-fluid main-content-margin">
         <div class="row">
-            <aside class="col-6 col-sm-4 col-md-3 col-lg-2 sidebar" id="sidebarCollapse">
+            <aside class="col-6 col-sm-4 col-md-3 col-lg-2 sidebar d-none d-lg-block" id="sidebarCollapse">
                 <div class="list-group">
                     <a asp-controller="Home" asp-action="Index" class="list-group-item list-group-item-action">Home</a>
                     <a asp-controller="Home" asp-action="Subscriptions" class="list-group-item list-group-item-action">Subscriptions</a>

@@ -1,8 +1,10 @@
 ﻿$(document).ready(function () {
-    $('#userSearch').on('input', function () {
+    const $searchInput = $('#userSearch');
+
+    $searchInput.on('input', function () {
         const query = $(this).val().toLowerCase();
 
-        $('table tbody tr').each(function () {
+        $('#user-table tbody tr').each(function () {
             let showRow = false;
 
             $(this).find('.user-filter').each(function () {
