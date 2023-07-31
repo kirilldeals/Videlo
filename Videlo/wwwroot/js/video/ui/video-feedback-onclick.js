@@ -1,15 +1,27 @@
 ﻿$(document).ready(function () {
-    const updateFeedback = (input) => {
-        updateVideoFeedback(input.data('videoid'), input.data('islike'));
+    const $likeInput = $('#like');
+    const $dislikeInput = $('#dislike');
+    const $likeSpan = $('#likecount');
+    const $dislikeSpan = $('#dislikecount');
+
+    const updateFeedback = ($input) => {
+        updateVideoFeedback($input.data('videoid'), $input.data('islike'));
     };
-    const deleteFeedback = (input) => {
-        deleteVideoFeedback(input.data('videoid'));
+    const deleteFeedback = ($input) => {
+        deleteVideoFeedback($input.data('videoid'));
     };
 
-    $('#like').on('click', function () {
-        feedbackHandler($(this), $('#likecount'), $('#dislike'), $('#dislikecount'), updateFeedback, deleteFeedback);
+    $likeInput.on('click', function () {
+        feedbackHandler(
+            $(this), $likeSpan,
+            $dislikeInput, $dislikeSpan,
+            updateFeedback, deleteFeedback);
     });
-    $('#dislike').on('click', function () {
-        feedbackHandler($(this), $('#dislikecount'), $('#like'), $('#likecount'), updateFeedback, deleteFeedback);
+
+    $dislikeInput.on('click', function () {
+        feedbackHandler(
+            $(this), $dislikeSpan,
+            $likeInput, $likeSpan,
+            updateFeedback, deleteFeedback);
     });
 });
