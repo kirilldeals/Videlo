@@ -22,7 +22,7 @@ namespace Videlo.Components
             var curUser = await _userManager.GetUserAsync(HttpContext.User);
             if (curUser == null)
             {
-                return View("_SubscriptionList");
+                return View("_SubscriptionList", Enumerable.Empty<UserSubscription>());
             }
 
             var model = _db.UserSubscriptions
@@ -30,7 +30,7 @@ namespace Videlo.Components
                 .Where(u => u.UserId == curUser.Id)
                 .OrderBy(s => s.UserChannel.UserName);
 
-            return View("_SubscriptionList", model);
+            return View("_SubscriptionList", await model.ToListAsync());
         }
     }
 }

@@ -206,10 +206,6 @@ namespace Videlo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            if (_db.Videos == null)
-            {
-                return Problem("Entity set 'VideloContext.Videos'  is null.");
-            }
             var video = _db.Videos
                 .Include(v => v.VideoFeedbacks)
                 .Include(v => v.VideoComments).ThenInclude(c => c.VideoCommentFeedbacks)

@@ -5,3 +5,15 @@
         alert(message);
     }
 }
+
+function infiniteScroll(callback) {
+    if ($(document).height() - $(this).height() == $(this).scrollTop()) {
+        callback();
+    }
+}
+
+function infiniteScrollError(xhr, message) {
+    console.log(xhr);
+    $(window).off('scroll');
+    $videoCommentsContainer.append(message);
+}

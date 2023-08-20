@@ -4,26 +4,41 @@
     const $newCommentsTab = $('#comments-new');
     const $htmlVideo = $('#video');
 
+    let isPopularFilter = true;
+    let pageIndex = 0;   
+
+    $(window).on('scroll', function () {
+        if (!$videoCommentsContainer.is(':empty'))
+            infiniteScroll(loadComments)
+    });
+
     $popularCommentsTab.on('click', function () {
-        handleCommentsFilter(true);
+        tabClick(true);
     });
 
     $newCommentsTab.on('click', function () {
-        handleCommentsFilter(false);
+        tabClick(false);
     });
 
-    handleCommentsFilter(true);
+    function tabClick(filter) {
+        isPopularFilter = filter;
+        pageIndex = 0;
+        $videoCommentsContainer.empty();
+        loadComments();
+    }
 
-    function handleCommentsFilter(isPopular) {
-        getVideoComments($htmlVideo.data('videoid'), isPopular)
+    loadComments();
+
+    function loadComments() {
+        getVideoComments($htmlVideo.data('videoid'), isPopularFilter, pageIndex)
             .then(displayComments)
             .catch(xhr => {
-                console.log(xhr);
-                displayComments('Unable to load comment section.');
+                infiniteScrollError(xhr, 'Unable to load comment section.');
             });
     }
 
     function displayComments(htmlString) {
-        $videoCommentsContainer.html(htmlString);
+        $videoCommentsContainer.append(htmlString);
+        pageIndex++;
     }
 });

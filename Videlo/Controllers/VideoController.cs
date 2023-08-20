@@ -173,5 +173,35 @@ namespace Videlo.Controllers
             }
             await _db.SaveChangesAsync();
         }
+
+
+        public async Task<IActionResult> GetRecommendations(string videoId, string channelId, int pageIndex, int pageSize = 10)
+        {
+            var model = _db.Videos
+                .Where(v => v.UserId == channelId)
+                .Include(v => v.User)
+                .Select(v => v);
+
+            var curUser = await _userManager.GetUserAsync(User);
+            if (curUser != null)
+            {
+                var curUserSubscriptionVideos = _db.UserSubscriptions
+                    .Where(s => s.UserId == curUser.Id)
+                    .Include(s => s.UserChannel).ThenInclude(u => u.Videos)
+                    .SelectMany(s => s.UserChannel.Videos)
+                    .Include(v => v.User);
+
+                model = model
+                    .Union(curUserSubscriptionVideos);
+            }
+
+            model = model
+                .Where(v => v.Id != videoId)
+                .OrderByDescending(v => v.CreatedAt)
+                .Skip(pageIndex * pageSize)
+                .Take(pageSize);
+
+            return PartialView("_Recommendations", await model.ToListAsync());
+        }
     }
 }

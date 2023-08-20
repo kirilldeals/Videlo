@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Videlo.Data;
 using Videlo.Models.Database;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Videlo.Components
 {
@@ -17,7 +18,7 @@ namespace Videlo.Components
             _userManager = userManager;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(string videoId, string channelId)
+        public async Task<IViewComponentResult> InvokeAsync(string videoId, string channelId, int pageIndex, int pageSize = 10)
         {
             var model = _db.Videos
                 .Where(v => v.UserId == channelId)
@@ -39,8 +40,11 @@ namespace Videlo.Components
 
             model = model
                 .Where(v => v.Id != videoId)
-                .OrderByDescending(v => v.CreatedAt);
-            return View("_Recommendations", model);
+                .OrderByDescending(v => v.CreatedAt)
+                .Skip(pageIndex * pageSize)
+                .Take(pageSize);
+
+            return View("_Recommendations", await model.ToListAsync());
         }
     }
 }

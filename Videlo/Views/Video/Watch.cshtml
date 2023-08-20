@@ -13,7 +13,7 @@
 
 <div class="row">
     <div class="col-12 col-lg-9">
-        <video class="w-100 max-h-video" controls autoplay muted id="video" data-videoid="@Model.Video.Id"
+        <video class="w-100 max-h-video" controls autoplay muted id="video" data-videoid="@Model.Video.Id" data-channelid="@Model.Video.UserId"
                src="@($"{AWSOptions.Value.BaseURL}{Model.Video.VideoPath}")">
         </video>
         <h3>@Model.Video.Title</h3>
@@ -69,10 +69,9 @@
         <form asp-action="Create" asp-controller="Comment" method="post" id="commentForm">
             <input type="hidden" name="videoId" value="@Model.Video.Id" />
             <div class="mb-3">
-                <textarea class="form-control" rows="3" maxlength="5000" placeholder="Write a comment" name="comment"></textarea>
-                <span class="text-danger" data-valmsg-for="comment"></span>
+                <textarea class="form-control" rows="3" maxlength="5000" placeholder="Write a comment" name="comment" id="new-comment-input"></textarea>
             </div>
-            <button type="submit" class="btn btn-secondary">Comment</button>
+            <button type="submit" class="btn btn-secondary" id="comment-button" disabled>Comment</button>
         </form>
 
         <div class="my-3">
@@ -96,8 +95,7 @@
         </div>
     </div>
 
-    <aside class="col-12 col-lg-3">
-        @await Component.InvokeAsync("Recommendations", new { videoId = Model.Video.Id, channelId = Model.Video.UserId })
+    <aside class="col-12 col-lg-3" id="recommendations-container">
     </aside>
 </div>
 
@@ -116,9 +114,16 @@
     <script type="text/javascript" src="~/js/video/services/video-feedback-request.js"></script>
     <script type="text/javascript" src="~/js/video/services/comment-feedback-request.js"></script>
 
+    <script type="text/javascript" src="~/js/video/ui/comment-submit-button.js"></script>
+    <script type="text/javascript" src="~/js/video/ui/display-comments.js"></script>
+    <script type="text/javascript" src="~/js/video/services/get-comments-request.js"></script>
+
+    <script type="text/javascript" src="~/js/video/ui/comment-update.js"></script>
+    <script type="text/javascript" src="~/js/video/services/comment-delete-request.js"></script>
+
     <script type="text/javascript" src="~/js/video/ui/video-watch-handler.js"></script>
     <script type="text/javascript" src="~/js/video/services/video-viewcount-request.js"></script>
 
-    <script type="text/javascript" src="~/js/video/ui/display-comments.js"></script>
-    <script type="text/javascript" src="~/js/video/services/get-comments-request.js"></script>
+    <script type="text/javascript" src="~/js/video/ui/display-recommendations.js"></script>
+    <script type="text/javascript" src="~/js/video/services/get-recommendations-request.js"></script>
 }
