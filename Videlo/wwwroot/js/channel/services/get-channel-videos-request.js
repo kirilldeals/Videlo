@@ -1,11 +1,12 @@
-﻿function getVideoComments(videoId, byPopular, pageIndex) {
+﻿function getVideos(userId, filter, viewName, pageIndex) {
     return new Promise((resolve, reject) => {
         $.ajax({
             type: 'GET',
-            url: '/Comment/VideoComments',
+            url: '/Channel/GetVideos',
             data: {
-                videoId,
-                byPopular,
+                userId,
+                filter,
+                viewName,
                 pageIndex
             },
             success: resolve,

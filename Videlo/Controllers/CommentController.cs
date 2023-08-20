@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Videlo.Data;
 using Videlo.Models.Database;
+using Videlo.Models.ViewModels;
+using Videlo.Services;
 
 namespace Videlo.Controllers
 {
@@ -19,23 +21,29 @@ namespace Videlo.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> VideoComments(string videoId, bool byPopular)
+        public async Task<IActionResult> VideoComments(string videoId, bool byPopular, int pageIndex, int pageSize = 10)
         {
             var curUser = await _userManager.GetUserAsync(User);
 
-            var model = _db.VideoComments
+            var query = _db.VideoComments
                 .Where(c => c.VideoId == videoId)
                 .Include(c => c.User)
                 .Include(c => c.VideoCommentFeedbacks)
                 .OrderByDescending(c => curUser != null && c.UserId == curUser.Id);
             if (byPopular)
             {
-                model = model
+                query = query
                     .ThenByDescending(c => c.VideoCommentFeedbacks.Count(f => f.IsLike))
                     .ThenByDescending(c => c.VideoCommentFeedbacks.Count(f => !f.IsLike));
             }
-            model = model
+            query = query
                 .ThenByDescending(c => c.CreatedAt);
+
+            var model = await query
+                .Skip(pageIndex * pageSize)
+                .Take(pageSize)
+                .Select(c => new CommentViewModel(c, curUser != null && c.UserId == curUser.Id))
+                .ToListAsync();
 
             return PartialView("_VideoComments", model);
         }
@@ -79,6 +87,24 @@ namespace Videlo.Controllers
 
             return RedirectToAction("Watch", "Video", new { videoId = video.Id });
         }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Delete(string commentId)
+        {
+            var comment = _db.VideoComments
+                .Include(c => c.VideoCommentFeedbacks)
+                .FirstOrDefault(c => c.Id == commentId);
+            if (comment != null)
+            {
+                _db.VideoComments.Remove(comment);
+            }
+
+            await _db.SaveChangesAsync();
+
+            return Ok();
+        }
+
 
         [HttpPost]
         [Authorize]

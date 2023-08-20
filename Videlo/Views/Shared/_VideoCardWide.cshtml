@@ -10,8 +10,8 @@
 <div class="card border-dark flex-row">
     <div class="d-flex align-items-center justify-content-center col-4">
         <a asp-controller="Video" asp-action="Watch" asp-route-videoId="@Model.Id">
-            <div class="d-flex align-items-center justify-content-center video-thumb-height">
-                <img class="mw-100 mh-100" src="@($"{AWSOptions.Value.BaseURL}{Model.ThumbnailPath}")" alt="Video thumbnail" />
+            <div class="d-flex align-items-center justify-content-center shadow-sm video-thumb-height video-thumb overflow-hidden">
+                <img class="mh-100 mw-100" src="@($"{AWSOptions.Value.BaseURL}{Model.ThumbnailPath}")" alt="Video thumbnail">
             </div>
         </a>
     </div>

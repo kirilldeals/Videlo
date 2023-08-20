@@ -1,7 +1,7 @@
-﻿const $searchInput = $('#video-search');
-const $searchList = $('#search-suggestions');
+﻿$(document).ready(function () {
+    const $searchInput = $('#video-search');
+    const $searchList = $('#search-suggestions');
 
-$(document).ready(function () {
     $searchInput.on('input', function () {
         const query = $(this).val();
 

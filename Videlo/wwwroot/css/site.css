@@ -49,8 +49,9 @@ body {
     padding-right: calc(var(--bs-gutter-x) * 1.0);
 }
 
-.max-h-video {
-    max-height: 40rem;
+.video-thumb > img:hover {
+    transition: 0.5s;
+    transform: scale(1.2);
 }
 
 .video-thumb-height {
@@ -70,7 +71,15 @@ body {
     text-decoration: inherit;
 }
 
+    .card a:hover {
+        color: white;
+    }
+
 /* Video Watch */
+.max-h-video {
+    max-height: 40rem;
+}
+
 .sidebar-right {
     position: fixed;
     top: var(--main-content-margin);
@@ -100,4 +109,13 @@ body {
     white-space: pre-wrap;
     max-height: 12rem;
     overflow: auto;
+}
+
+.non-style-button {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    outline: inherit;
 }

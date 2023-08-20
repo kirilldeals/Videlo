@@ -53,30 +53,34 @@ namespace Videlo.Controllers
             return View(user);
         }
 
-        public async Task<IActionResult> GetVideos(string userId, ChannelVideosFilter filter, string viewName)
+        public async Task<IActionResult> GetVideos(string userId, ChannelVideosFilter filter, string viewName, int pageIndex, int pageSize = 24)
         {
             var curUser = await _userManager.GetUserAsync(User);
 
-            IQueryable<Video> model = _db.Videos
+            IQueryable<Video> query = _db.Videos
                 .Where(c => c.UserId == userId)
                 .Include(c => c.User);
 
             if (filter == ChannelVideosFilter.Newest)
             {
-                model = model
+                query = query
                     .OrderByDescending(v => v.CreatedAt);
             }
             else if (filter == ChannelVideosFilter.Oldest)
             {
-                model = model
+                query = query
                     .OrderBy(v => v.CreatedAt);
             }
             else if (filter == ChannelVideosFilter.Popular)
             {
-                model = model
+                query = query
                     .OrderByDescending(v => v.ViewCount)
                     .ThenByDescending(v => v.CreatedAt);
             }
+            var model = await query
+                .Skip(pageIndex * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
 
             return PartialView(viewName, model);
         }

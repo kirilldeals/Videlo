@@ -1,12 +1,11 @@
-﻿function getVideos(userId, filter, viewName) {
+﻿function getIndexVideos(searchQuery, pageIndex) {
     return new Promise((resolve, reject) => {
         $.ajax({
             type: 'GET',
-            url: '/Channel/GetVideos',
+            url: '/Home/IndexVideos',
             data: {
-                userId,
-                filter,
-                viewName
+                searchQuery,
+                pageIndex
             },
             success: resolve,
             error: reject

@@ -22,21 +22,46 @@ namespace Videlo.Controllers
 
         public IActionResult Index(string searchQuery)
         {
-            IQueryable<Models.Database.Video> model = _db.Videos;
+            ViewBag.SearchQuery = searchQuery;
+            return View();
+        }
+
+        public async Task<IActionResult> IndexVideos(string searchQuery, int pageIndex = 0, int pageSize = 24)
+        {
+            IQueryable<Video> model = _db.Videos;
             if (!string.IsNullOrEmpty(searchQuery))
             {
                 model = model.Where(s => s.Title.Contains(searchQuery));
             }
             model = model
                 .Include(v => v.User)
-                .OrderByDescending(v => v.CreatedAt);
-            ViewBag.SearchQuery = searchQuery;
+                .OrderByDescending(v => v.CreatedAt)
+                .Skip(pageIndex * pageSize)
+                .Take(pageSize);
 
-            return View(model);
+            return PartialView("_VideoCardPage", await model.ToListAsync());
+        }
+
+        [HttpGet]
+        public IActionResult Search(string query)
+        {
+            var searchResults = _db.Videos
+                .Where(e => e.Title.Contains(query))
+                .OrderByDescending(v => v.ViewCount)
+                .Select(e => e.Title)
+                .Take(10);
+
+            return Json(searchResults);
         }
 
         [Authorize]
-        public async Task<IActionResult> Subscriptions()
+        public IActionResult Subscriptions()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public async Task<IActionResult> SubscriptionVideos(int pageIndex = 0, int pageSize = 24)
         {
             var curUser = await _userManager.GetUserAsync(User);
             if (curUser == null)
@@ -50,21 +75,11 @@ namespace Videlo.Controllers
                 .ThenInclude(uc => uc.Videos)
                 .ThenInclude(v => v.User)
                 .SelectMany(us => us.UserChannel.Videos)
-                .OrderByDescending(v => v.CreatedAt);
+                .OrderByDescending(v => v.CreatedAt)
+                .Skip(pageIndex * pageSize)
+                .Take(pageSize);
 
-            return View(model);
-        }
-
-        [HttpGet]
-        public IActionResult Search(string query)
-        {
-            var searchResults = _db.Videos
-                .Where(e => e.Title.Contains(query))
-                .OrderByDescending(v => v.ViewCount)
-                .Select(e => e.Title)
-                .Take(10);
-
-            return Json(searchResults);
+            return PartialView("_VideoCardPage", await model.ToListAsync());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

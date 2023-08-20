@@ -6,11 +6,10 @@
     ViewData["Title"] = "Video hosting";
 }
 
-<div class="row justify-content-center">
-    @foreach (var video in Model)
-    {
-        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 pb-4">
-            @await Html.PartialAsync("_VideoCard", video)
-        </div>
-    }
+<div class="row justify-content-center" id="videos-container">
 </div>
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/home/ui/index-videos.js"></script>
+    <script type="text/javascript" src="~/js/home/services/get-index-videos-request.js"></script>
+}
